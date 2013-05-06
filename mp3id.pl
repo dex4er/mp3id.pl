@@ -1,8 +1,5 @@
 #!/usr/bin/perl
 
-eval 'exec /usr/bin/perl  -S $0 ${1+"$@"}'
-    if 0; # not running under some shell
-
 # mp3id 0.4 (c) 1999-2000 Piotr Roszatycki <dexter@fnet.pl>
 
 # This is free software; you can redistribute it and/or modify it under
@@ -20,7 +17,7 @@ use_winamp_genres();
 
 my @files;
 
-GetOptions( \%opt, 
+GetOptions( \%opt,
     "artist|a=s",
     "album|l=s",
     "title|t=s",
@@ -32,7 +29,7 @@ GetOptions( \%opt,
     "rename|r",
     "various|v",
     "help|h",
-    "<>", \&optfiles 
+    "<>", \&optfiles
 );
 
 sub optfiles {
@@ -65,7 +62,7 @@ die "mp3id 0.4 (c) 1999-2000 Piotr Roszatycki <dexter\@debian.org>\n".
 
 if( defined $opt{genre} && $opt{genre} eq "0" ) {
     foreach( sort @mp3_genres ) {
-	print $_, "\n";
+        print $_, "\n";
     }
     exit;
 }
@@ -75,7 +72,7 @@ $cwd = cwd;
 if( ! @files ) {
     opendir(DIR, $cwd) || die "can't opendir $cwd: $!";
     @files = sort grep { /\.mp3$/i && -f "$cwd/$_" } readdir(DIR);
-    closedir DIR;                                                
+    closedir DIR;
 }
 
 my $tracknum = 0;
@@ -94,76 +91,76 @@ foreach $file ( @files ) {
     $tag->{YEAR}     = sprintf "%04i",  $opt{year} % 1e4     if defined $opt{year};
     $tag->{GENRE}    = sprintf "%.30s", $opt{genre}          if defined $opt{genre};
     $tag->{TRACKNUM} = sprintf "%02i",  $opt{tracknum} % 1e2 if defined $opt{tracknum};
-    $tag->{TRACKNUM} = sprintf "%02i",  $tracknum	     if defined $opt{tracknum} &&
-	$opt{tracknum} == 99;
+    $tag->{TRACKNUM} = sprintf "%02i",  $tracknum            if defined $opt{tracknum} &&
+        $opt{tracknum} == 99;
 
     print "Filename: ", $file, "\n";
 
     if( $opt{input} ) {
-	print "Artist [",   $tag->{ARTIST},   "]: ";
-	$_ = <>; 
-	if( chomp $_ ) {
-	    $_ ne '' and $tag->{ARTIST} = sprintf "%.30s", $_;
-	} else {
-	    print "\n";
-	    delete $tag->{ARTIST};
-	}
-	print "Album [",    $tag->{ALBUM},    "]: ";
-	$_ = <>; 
-	if( chomp $_ ) {
-	    $_ ne '' and $tag->{ALBUM} = sprintf "%.30s", $_;
-	} else {
-	    print "\n";
-	    delete $tag->{ALBUM};
-	}
-	print "Title [",    $tag->{TITLE},    "]: ";
-	$_ = <>; 
-	if( chomp $_ ) {
-	    $_ ne '' and $tag->{TITLE} = sprintf "%.30s", $_;
-	} else {
-	    print "\n";
-	    delete $tag->{TITLE};
-	}
-	print "Comment [",  $tag->{COMMENT},  "]: ";
-	$_ = <>; 
-	if( chomp $_ ) {
-	    $_ ne '' and $tag->{COMMENT} = sprintf "%.28s", $_;
-	} else {
-	    print "\n";
-	    delete $tag->{COMMENT};
-	}
-	print "Year [",     $tag->{YEAR},     "]: ";
-	$_ = <>; 
-	if( chomp $_ ) {
-	    $_ ne '' and $tag->{YEAR} = sprintf "%04i", $_;
-	} else {
-	    print "\n";
-	    delete $tag->{YEAR};
-	}
-	print "Genre [",    $tag->{GENRE},    "]: ";
-	$_ = <>; 
-	if( chomp $_ ) {
-	    $_ ne '' and $tag->{GENRE} = sprintf "%.30s", $_;
-	} else {
-	    print "\n";
-	    delete $tag->{GENRE};
-	}
-	print "Tracknum [", $tag->{TRACKNUM}, "]: ";
-	$_ = <>; 
-	if( chomp $_ ) {
-	    $_ ne '' and $tag->{TRACKNUM} = sprintf "%02i", $_;
-	} else {
-	    print "\n";
-	    delete $tag->{TRACKNUM};
-	}
+        print "Artist [",   $tag->{ARTIST},   "]: ";
+        $_ = <>;
+        if( chomp $_ ) {
+            $_ ne '' and $tag->{ARTIST} = sprintf "%.30s", $_;
+        } else {
+            print "\n";
+            delete $tag->{ARTIST};
+        }
+        print "Album [",    $tag->{ALBUM},    "]: ";
+        $_ = <>;
+        if( chomp $_ ) {
+            $_ ne '' and $tag->{ALBUM} = sprintf "%.30s", $_;
+        } else {
+            print "\n";
+            delete $tag->{ALBUM};
+        }
+        print "Title [",    $tag->{TITLE},    "]: ";
+        $_ = <>;
+        if( chomp $_ ) {
+            $_ ne '' and $tag->{TITLE} = sprintf "%.30s", $_;
+        } else {
+            print "\n";
+            delete $tag->{TITLE};
+        }
+        print "Comment [",  $tag->{COMMENT},  "]: ";
+        $_ = <>;
+        if( chomp $_ ) {
+            $_ ne '' and $tag->{COMMENT} = sprintf "%.28s", $_;
+        } else {
+            print "\n";
+            delete $tag->{COMMENT};
+        }
+        print "Year [",     $tag->{YEAR},     "]: ";
+        $_ = <>;
+        if( chomp $_ ) {
+            $_ ne '' and $tag->{YEAR} = sprintf "%04i", $_;
+        } else {
+            print "\n";
+            delete $tag->{YEAR};
+        }
+        print "Genre [",    $tag->{GENRE},    "]: ";
+        $_ = <>;
+        if( chomp $_ ) {
+            $_ ne '' and $tag->{GENRE} = sprintf "%.30s", $_;
+        } else {
+            print "\n";
+            delete $tag->{GENRE};
+        }
+        print "Tracknum [", $tag->{TRACKNUM}, "]: ";
+        $_ = <>;
+        if( chomp $_ ) {
+            $_ ne '' and $tag->{TRACKNUM} = sprintf "%02i", $_;
+        } else {
+            print "\n";
+            delete $tag->{TRACKNUM};
+        }
     }
 
-    if( defined $opt{artist}   || defined $opt{title} || 
-	defined $opt{comment}  || defined $opt{album} ||
-	defined $opt{year}     || defined $opt{genre} || 
-	defined $opt{tracknum} || defined $opt{input} ) {
-	set_mp3tag($file, $tag);
-	$tag = get_mp3tag($file);
+    if( defined $opt{artist}   || defined $opt{title} ||
+        defined $opt{comment}  || defined $opt{album} ||
+        defined $opt{year}     || defined $opt{genre} ||
+        defined $opt{tracknum} || defined $opt{input} ) {
+        set_mp3tag($file, $tag);
+        $tag = get_mp3tag($file);
     }
 
     print "A:[", $tag->{ARTIST},   "] " if $tag->{ARTIST} ne '';
@@ -176,31 +173,31 @@ foreach $file ( @files ) {
     print "\n";
 
     if( defined $opt{rename} ) {
-	my $name;
-	$name = $opt{various} ? "Various" : "$tag->{ARTIST}";
-	$name =~ tr/-/+/;
-	$name .= "-$tag->{ALBUM}";
-	$name =~ tr/ ()/_[]/;
-	$name =~ s/[^a-zA-Z0-9_\[\]-]/+/g;
-	my $dir = $tag->{ALBUM} ? "../$name/" : "";
-    
-	$name = "$tag->{ARTIST}";
-	$name =~ tr/-/+/;
-	$name .= "-$tag->{TITLE}";
-	$name .= " $tag->{COMMENT}" if $tag->{COMMENT};
-	$name =~ tr/ ()/_[]/;
-	$name =~ s/[^a-zA-Z0-9_\[\]-]/+/g;
+        my $name;
+        $name = $opt{various} ? "Various" : "$tag->{ARTIST}";
+        $name =~ tr/-/+/;
+        $name .= "-$tag->{ALBUM}";
+        $name =~ tr/ ()/_[]/;
+        $name =~ s/[^a-zA-Z0-9_\[\]-]/+/g;
+        my $dir = $tag->{ALBUM} ? "../$name/" : "";
 
-	$name = sprintf "%02d-$name.mp3", $tag->{TRACKNUM} ? $tag->{TRACKNUM} : $n;
-    
-	my $src = $file;
-	my $dst = "$dir$name";
-	$dst =~ s/\//\\/g if $MSDOS;
+        $name = "$tag->{ARTIST}";
+        $name =~ tr/-/+/;
+        $name .= "-$tag->{TITLE}";
+        $name .= " $tag->{COMMENT}" if $tag->{COMMENT};
+        $name =~ tr/ ()/_[]/;
+        $name =~ s/[^a-zA-Z0-9_\[\]-]/+/g;
+
+        $name = sprintf "%02d-$name.mp3", $tag->{TRACKNUM} ? $tag->{TRACKNUM} : $n;
+
+        my $src = $file;
+        my $dst = "$dir$name";
+        $dst =~ s/\//\\/g if $MSDOS;
 
         print "Rename: ", $dst, "\n";
 
-	mkdir $dir, 0755;
-	move( $src, $dst );
+        mkdir $dir, 0755;
+        move( $src, $dst );
     }
 
     print "\n";
@@ -216,17 +213,17 @@ mp3id - MP3 tag manipulate utility
 
 =head1 SYNOPSIS
 
-B<mp3id> S<[ B<--artist>|B<-a> I<str> ]> S<[ B<--title>|B<-t> I<str> ]> 
-	  S<[ B<--comment>|B<-c> I<str> ]> S<[ B<--album>|B<-l> I<str> ]> 
-	  S<[ B<--year>|B<-y> I<num> ]> S<[ B<--genre>|B<-g> I<str> ]> 
-	  S<[ B<--tracknum>|B<-n> I<num> ]> S<[ B<--input>|B<-i> ]> 
-	  S<[ B<--rename>|B<-r> ]> S<[ B<--various>|B<-v> ]>
-	  S<[ B<--help>|B<-h> ]>
+B<mp3id> S<[ B<--artist>|B<-a> I<str> ]> S<[ B<--title>|B<-t> I<str> ]>
+          S<[ B<--comment>|B<-c> I<str> ]> S<[ B<--album>|B<-l> I<str> ]>
+          S<[ B<--year>|B<-y> I<num> ]> S<[ B<--genre>|B<-g> I<str> ]>
+          S<[ B<--tracknum>|B<-n> I<num> ]> S<[ B<--input>|B<-i> ]>
+          S<[ B<--rename>|B<-r> ]> S<[ B<--various>|B<-v> ]>
+          S<[ B<--help>|B<-h> ]>
 
 =head1 DESCRIPTION
 
 mp3id is a very simple tool written in perl with usage of MPEG::MP3Info
-library. This utility allows to read tag, modify in interactive mode or 
+library. This utility allows to read tag, modify in interactive mode or
 command line, and rename filename.
 
 =head1 OPTIONS
@@ -284,5 +281,5 @@ Show help info.
 
 (c) 1999 Piotr Roszatycki E<lt>dexter@debian.orgE<gt>
 
-All rights reserved.  This program is free software; you can redistribute it 
+All rights reserved.  This program is free software; you can redistribute it
 and/or modify it under the terms of the GNU General Public License, the latest version.
