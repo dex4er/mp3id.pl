@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# mp3id 0.4 (c) 1999-2000 Piotr Roszatycki <dexter@fnet.pl>
+# mp3id (c) 1999-2000, 2013 Piotr Roszatycki <dexter@debian.org>
 
 # This is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free
@@ -8,16 +8,20 @@
 # version.
 
 
+use strict;
+use warnings;
+
+our $VERSION = 0.5;
+
 use Cwd;
 use File::Copy;
 use Getopt::Long;
 use MP3::Info qw(:all);
 
-use_winamp_genres();
-
 my @files;
+my %opt;
 
-GetOptions( \%opt,
+GetOptions(\%opt,
     "artist|a=s",
     "album|l=s",
     "title|t=s",
@@ -29,14 +33,10 @@ GetOptions( \%opt,
     "rename|r",
     "various|v",
     "help|h",
-    "<>", \&optfiles
+    "<>" => sub { push @files, $_[0] },
 );
 
-sub optfiles {
-    push @files, shift;
-}
-
-die "mp3id 0.4 (c) 1999-2000 Piotr Roszatycki <dexter\@debian.org>\n".
+die "mp3id $VERSION (c) 1999-2000, 2013 Piotr Roszatycki <dexter\@debian.org>\n".
     "This is free software under GPL and WITHOUT ANY WARRANTY\n".
     "\n".
     "usage: mp3id [--artist|-a <str>] [--title|-t <str>] [--comment|-c <str>]\n".
@@ -67,7 +67,7 @@ if( defined $opt{genre} && $opt{genre} eq "0" ) {
     exit;
 }
 
-$cwd = cwd;
+my $cwd = cwd;
 
 if( ! @files ) {
     opendir(DIR, $cwd) || die "can't opendir $cwd: $!";
@@ -77,7 +77,7 @@ if( ! @files ) {
 
 my $tracknum = 0;
 
-foreach $file ( @files ) {
+foreach my $file ( @files ) {
 
     my $info = get_mp3info($file) or next;
     my $tag = get_mp3tag($file);
@@ -188,11 +188,11 @@ foreach $file ( @files ) {
         $name =~ tr/ ()/_[]/;
         $name =~ s/[^a-zA-Z0-9_\[\]-]/+/g;
 
-        $name = sprintf "%02d-$name.mp3", $tag->{TRACKNUM} ? $tag->{TRACKNUM} : $n;
+        $name = sprintf "%02d-$name.mp3", $tag->{TRACKNUM} ? $tag->{TRACKNUM} : $tracknum;
 
         my $src = $file;
         my $dst = "$dir$name";
-        $dst =~ s/\//\\/g if $MSDOS;
+        $dst =~ s/\//\\/g if $^O eq 'MSWin32';
 
         print "Rename: ", $dst, "\n";
 
